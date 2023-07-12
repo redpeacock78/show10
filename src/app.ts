@@ -18,9 +18,7 @@ app.post("/links", async (c): Promise<void | Response> => {
         id = Snowflake.generate(0)().next().value as string;
         if (id.slice(-1) !== "0") break;
       }
-      const key: string = Key.encode62(
-        BigInt([...(id as string)].reverse().join(""))
-      );
+      const key: string = Key.encode62(BigInt([...id].reverse().join("")));
       const setResult: Db.setResultType = await Db.setShorterUrl({
         id: BigInt(id),
         key: key,
