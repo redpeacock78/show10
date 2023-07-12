@@ -4,8 +4,8 @@ const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 namespace Key {
   export const encode62 = (num: bigint): string => {
-    let number = num;
-    const base = BigInt(chars.length);
+    let number: bigint = num;
+    const base: bigint = BigInt(chars.length);
     let str: string = "";
     while (true) {
       str = `${[...chars][Number(number % base)]}${str}`;
@@ -15,8 +15,8 @@ namespace Key {
     return str;
   };
   export const decode62 = (string: string): string => {
-    const base = BigInt(chars.length);
-    let num = 0n;
+    const base: bigint = BigInt(chars.length);
+    let num: bigint = 0n;
     for (const char of [...string]) {
       num = num * base + BigInt([...chars].indexOf(char) as number);
     }
