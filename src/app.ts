@@ -4,12 +4,13 @@ import { Snowflake, Key, Db } from "@libs/index.ts";
 
 const app = new Hono();
 
+await Db.createShorterUrlTable();
+
 app.get("/", (c) => c.text("OK!"));
 app.post("/links", async (c) => {
   const { url } = await c.req.json<{ url: string }>();
   if (!url) return c.text("Missing Url!", 400);
   try {
-    await Db.createShorterUrlTable();
     const getKey = await Db.getKey(url);
     if (getKey.length === 0) {
       let id: string;
@@ -37,7 +38,6 @@ app.post("/links", async (c) => {
 app.get("/:key", async (c) => {
   const key = c.req.param("key");
   try {
-    await Db.createShorterUrlTable();
     const originUrl = await Db.getOriginUrl(key);
     const url: string = originUrl[0].origin_url;
     if (!url) return c.notFound();
