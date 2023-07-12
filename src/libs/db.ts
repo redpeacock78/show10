@@ -2,6 +2,21 @@
 import "dotenv";
 import postgres from "postgresjs";
 
+type setObjectType = {
+  id: bigint;
+  key: string;
+  origin_url: string;
+};
+type setResultType = {
+  key: string;
+}[];
+type getOriginUrlType = {
+  origin_url: string;
+}[];
+type getKeyType = {
+  key: string;
+}[];
+
 const sql = postgres({
   host: Deno.env.get("POSTGRES_HOST"),
   port: 5432,
@@ -26,11 +41,7 @@ namespace Db {
     id: id,
     key: key,
     origin_url: originUrl,
-  }: {
-    id: bigint;
-    key: string;
-    origin_url: string;
-  }) => {
+  }: setObjectType): Promise<setResultType> => {
     return await sql`
       insert into shorter_url
         (id, key, origin_url)
@@ -39,7 +50,9 @@ namespace Db {
       returning key
     `;
   };
-  export const getOriginUrl = async (key: string) => {
+  export const getOriginUrl = async (
+    key: string
+  ): Promise<getOriginUrlType> => {
     return await sql`
       select
         origin_url
@@ -49,7 +62,7 @@ namespace Db {
         key = ${key}
     `;
   };
-  export const getKey = async (originUrl: string) => {
+  export const getKey = async (originUrl: string): Promise<getKeyType> => {
     return await sql`
       select
         key
