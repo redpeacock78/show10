@@ -2,21 +2,6 @@
 import "dotenv";
 import postgres from "postgresjs";
 
-type setObjectType = {
-  id: bigint;
-  key: string;
-  origin_url: string;
-};
-type setResultType = {
-  key: string;
-}[];
-type getOriginUrlType = {
-  origin_url: string;
-}[];
-type getKeyType = {
-  key: string;
-}[];
-
 const sql = postgres({
   host: Deno.env.get("POSTGRES_HOST"),
   port: 5432,
@@ -26,6 +11,20 @@ const sql = postgres({
 });
 
 namespace Db {
+  export type setObjectType = {
+    id: bigint;
+    key: string;
+    origin_url: string;
+  };
+  export type setResultType = {
+    key: string;
+  }[];
+  export type getOriginUrlType = {
+    origin_url: string;
+  }[];
+  export type getKeyType = {
+    key: string;
+  }[];
   export const createShorterUrlTable = async (): Promise<void> => {
     await sql`
       CREATE TABLE IF NOT EXISTS shorter_url (
