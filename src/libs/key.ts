@@ -2,7 +2,7 @@
 
 const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-namespace Key {
+export namespace Key {
   export const encode62 = (num: bigint): string => {
     let number: bigint = num;
     const base: bigint = BigInt(chars.length);
@@ -23,5 +23,3 @@ namespace Key {
     return num.toString();
   };
 }
-
-export default Key;

@@ -4,13 +4,14 @@ import postgres from "postgresjs";
 
 const sql = postgres({
   host: Deno.env.get("POSTGRES_HOST"),
-  port: 5432,
+  port: Deno.env.get("POSTGRES_PORT"),
   database: Deno.env.get("POSTGRES_DB"),
   username: Deno.env.get("POSTGRES_USER"),
   password: Deno.env.get("POSTGRES_PASSWORD"),
+  ssl: Deno.env.get("POSTGRES_SSL"),
 });
 
-namespace Db {
+export namespace Db {
   export type setObjectType = {
     id: bigint;
     key: string;
@@ -75,5 +76,3 @@ namespace Db {
     await sql.end();
   };
 }
-
-export default Db;
