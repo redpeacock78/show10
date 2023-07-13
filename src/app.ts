@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { serve } from "serve";
-import { Snowflake, Key, Db } from "@libs/index.ts";
+import { Snowflake, isUrl, Key, Db } from "@libs/index.ts";
 
 const app = new Hono();
 
@@ -10,6 +10,7 @@ app.get("/", (c): Response => c.text("OK!"));
 app.post("/links", async (c): Promise<void | Response> => {
   const { url } = await c.req.json<{ url: string }>();
   if (!url) return c.text("Missing Url!", 400);
+  if (!isUrl(url)) return c.text("Invalid Url!", 400);
   try {
     const getKey: Db.getKeyType = await Db.getKey(url);
     if (getKey.length === 0) {
