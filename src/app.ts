@@ -1,47 +1,13 @@
 import { Hono } from "hono";
 import { serve } from "serve";
-import { Id, Db, Key, isUrl } from "@libs/index.ts";
+import { Db } from "libs";
+import { api, common } from "router";
 
 const app = new Hono();
 
 await Db.createShorterUrlTable();
 
-app.get("/", (c): Response => c.text("OK!"));
-app.post("/links", async (c): Promise<void | Response> => {
-  const { url } = await c.req.json<{ url: string }>();
-  if (!url) return c.text("Missing Url!", 400);
-  if (!isUrl(url)) return c.text("Invalid Url!", 400);
-  try {
-    const getKey: Db.getKeyType = await Db.getKey(url);
-    if (getKey.length === 0) {
-      const id: string = await Id.generate(0);
-      const key: string = Key.encode62(BigInt([...id].reverse().join("")));
-      const setResult: Db.setResultType = await Db.setShorterUrl({
-        id: BigInt(id),
-        key: key,
-        origin_url: url,
-      });
-      return c.json({ key: setResult[0].key, url: url });
-    } else {
-      const originUrl: Db.getOriginUrlType = await Db.getOriginUrl(
-        getKey[0].key
-      );
-      return c.json({ key: getKey[0].key, url: originUrl[0].origin_url });
-    }
-  } catch {
-    return c.status(500);
-  }
-});
-app.get("/:key", async (c): Promise<void | Response> => {
-  const key: string = c.req.param("key");
-  try {
-    const originUrl: Db.getOriginUrlType = await Db.getOriginUrl(key);
-    const url: string = originUrl[0].origin_url;
-    if (!url) return c.notFound();
-    return c.redirect(url, 301);
-  } catch {
-    return c.status(500);
-  }
-});
+app.route("/", api);
+app.route("/", common);
 
 serve(app.fetch);
