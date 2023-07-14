@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { serve } from "serve";
-import { Snowflake, isUrl, Key, Db } from "@libs/index.ts";
+import { Id, Db, Key, isUrl } from "@libs/index.ts";
 
 const app = new Hono();
 
@@ -14,11 +14,7 @@ app.post("/links", async (c): Promise<void | Response> => {
   try {
     const getKey: Db.getKeyType = await Db.getKey(url);
     if (getKey.length === 0) {
-      let id: string;
-      while (true) {
-        id = Snowflake.generate(0)().next().value as string;
-        if (id.slice(-1) !== "0") break;
-      }
+      const id: string = Id.generate(0);
       const key: string = Key.encode62(BigInt([...id].reverse().join("")));
       const setResult: Db.setResultType = await Db.setShorterUrl({
         id: BigInt(id),
