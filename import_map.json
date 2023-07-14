@@ -1,6 +1,9 @@
 {
   "imports": {
     "@libs/": "./src/libs/",
+    "@router/": "./src/router/",
+    "libs": "./src/libs/index.ts",
+    "router": "./src/router/index.ts",
     "hono": "https://deno.land/x/hono@v3.3.0/mod.ts",
     "serve": "https://deno.land/std@0.193.0/http/server.ts",
     "postgresjs": "https://deno.land/x/postgresjs@v3.3.5/mod.js",
