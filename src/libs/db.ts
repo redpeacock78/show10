@@ -26,6 +26,9 @@ export namespace Db {
   export type getKeyType = {
     key: string;
   }[];
+  export type getLastIdType = {
+    id: string;
+  }[];
   export const createShorterUrlTable = async (): Promise<void> => {
     await sql`
       CREATE TABLE IF NOT EXISTS shorter_url (
@@ -70,6 +73,18 @@ export namespace Db {
         shorter_url
       where
         origin_url = ${originUrl}
+    `;
+  };
+  export const getLastId = async (): Promise<getLastIdType> => {
+    return await sql`
+      select
+        id
+      from
+        shorter_url
+      order by
+        id desc
+      limit
+        1
     `;
   };
   export const close = async (): Promise<void> => {
