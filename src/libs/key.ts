@@ -1,8 +1,16 @@
 // deno-lint-ignore-file
 
-const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
+/**
+ * 短縮URLに使用するための文字列のエンコード/デコードを行う名前空間
+ */
 export namespace Key {
+  const chars =
+    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  /**
+   * 与えられた数値をbase62で文字列に変換
+   * @param {bigint} num 変換したい数値
+   * @returns {string} 変換結果の文字列
+   */
   export const encode62 = (num: bigint): string => {
     let number: bigint = num;
     const base: bigint = BigInt(chars.length);
@@ -14,6 +22,11 @@ export namespace Key {
     }
     return str;
   };
+  /**
+   * base62で変換された文字列を元の文字列(数値)に変換
+   * @param {string} string 変換したい文字列
+   * @returns {string} 変換結果の文字列(数値)
+   */
   export const decode62 = (string: string): string => {
     const base: bigint = BigInt(chars.length);
     let num: bigint = 0n;

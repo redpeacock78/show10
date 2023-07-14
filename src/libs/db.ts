@@ -2,16 +2,18 @@
 import "dotenv";
 import postgres from "postgresjs";
 
-const sql = postgres({
-  host: Deno.env.get("POSTGRES_HOST"),
-  port: Deno.env.get("POSTGRES_PORT"),
-  database: Deno.env.get("POSTGRES_DB"),
-  username: Deno.env.get("POSTGRES_USER"),
-  password: Deno.env.get("POSTGRES_PASSWORD"),
-  ssl: Deno.env.get("POSTGRES_SSL"),
-});
-
+/**
+ * データベースの操作に関する名前空間
+ */
 export namespace Db {
+  const sql = postgres({
+    host: Deno.env.get("POSTGRES_HOST"),
+    port: Deno.env.get("POSTGRES_PORT"),
+    database: Deno.env.get("POSTGRES_DB"),
+    username: Deno.env.get("POSTGRES_USER"),
+    password: Deno.env.get("POSTGRES_PASSWORD"),
+    ssl: Deno.env.get("POSTGRES_SSL"),
+  });
   export type setObjectType = {
     id: bigint;
     key: string;
@@ -29,6 +31,10 @@ export namespace Db {
   export type getLastIdType = {
     id: string;
   }[];
+  /**
+   * 使用するDBのテーブルを作成する(作成済みの場合は再作成されない)
+   * @returns {Promise<void>}
+   */
   export const createShorterUrlTable = async (): Promise<void> => {
     await sql`
       CREATE TABLE IF NOT EXISTS shorter_url (
@@ -40,6 +46,11 @@ export namespace Db {
       );
     `;
   };
+  /**
+   * DBに生成した短縮URLの情報を書き込む
+   * @param {setObjectType} setObject DBに書き込む情報
+   * @returns {Promise<setResultType>} 登録された短縮URLの文字列
+   */
   export const setShorterUrl = async ({
     id: id,
     key: key,
@@ -53,6 +64,11 @@ export namespace Db {
       returning key
     `;
   };
+  /**
+   * 与えられた短縮URLの文字列から元のURLを検索する
+   * @param {string} key 短縮URLの文字列
+   * @returns {Promise<getOriginUrlType>} 検索結果
+   */
   export const getOriginUrl = async (
     key: string
   ): Promise<getOriginUrlType> => {
@@ -65,6 +81,11 @@ export namespace Db {
         key = ${key}
     `;
   };
+  /**
+   * 与えられたURLから短縮URLの文字列を検索する
+   * @param {string} originUrl URL
+   * @returns {Promise<getKeyType>} 検索結果
+   */
   export const getKey = async (originUrl: string): Promise<getKeyType> => {
     return await sql`
       select
@@ -75,6 +96,10 @@ export namespace Db {
         origin_url = ${originUrl}
     `;
   };
+  /**
+   * 最後に登録されたIDを検索する
+   * @returns {Promise<getLastIdType>} 検索結果
+   */
   export const getLastId = async (): Promise<getLastIdType> => {
     return await sql`
       select
