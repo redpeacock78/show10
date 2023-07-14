@@ -1,10 +1,9 @@
 // deno-lint-ignore-file no-namespace
 import { Snowflake, Db } from "@libs/index.ts";
 
-const lastId: Db.getLastIdType = await Db.getLastId();
-
 export namespace Id {
-  export const generate = (machine_id: number): string => {
+  export const generate = async (machine_id: number): Promise<string> => {
+    const lastId: Db.getLastIdType = await Db.getLastId();
     let id: string;
     while (true) {
       try {
