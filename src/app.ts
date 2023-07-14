@@ -14,7 +14,7 @@ app.post("/links", async (c): Promise<void | Response> => {
   try {
     const getKey: Db.getKeyType = await Db.getKey(url);
     if (getKey.length === 0) {
-      const id: string = Id.generate(0);
+      const id: string = await Id.generate(0);
       const key: string = Key.encode62(BigInt([...id].reverse().join("")));
       const setResult: Db.setResultType = await Db.setShorterUrl({
         id: BigInt(id),
