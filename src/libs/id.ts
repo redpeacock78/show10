@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-namespace
-import { Snowflake, Db } from "@libs/index.ts";
+import { Db, Snowflake } from "libs";
 
 /**
  * DBで使うIDや短縮URLの文字列の変換元として使用する数値の生成を行う名前空間
