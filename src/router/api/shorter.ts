@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { Id, Db, Key, isUrl } from "@libs/index.ts";
+import { Db, Id, Key, isUrl } from "libs";
 
 const shorter = new Hono();
 
