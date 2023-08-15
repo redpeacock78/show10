@@ -13,6 +13,9 @@ export namespace Db {
     username: Deno.env.get("POSTGRES_USER"),
     password: Deno.env.get("POSTGRES_PASSWORD"),
     ssl: Deno.env.get("POSTGRES_SSL"),
+    onnotice: (_i: unknown): void => {
+      return;
+    },
   });
   export type setObjectType = {
     id: bigint;
