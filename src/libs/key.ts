@@ -31,6 +31,7 @@ export namespace Key {
     const base: bigint = BigInt(chars.length);
     let num: bigint = 0n;
     for (const char of [...string]) {
+      if ([...chars].indexOf(char) === -1) break;
       num = num * base + BigInt([...chars].indexOf(char) as number);
     }
     return num.toString();
