@@ -5,7 +5,7 @@
  */
 export namespace Snowflake {
   /**
-   * Snowflakeを使用し一意な数値を生成する(基準時刻は2023/07/08 00:00:00.000 UTC)
+   * Snowflakeを使用し一意な数値を生成する(基準時刻は2023/07/01 00:00:00.000 UTC)
    * @param {number} machineId 一意なMachine ID
    * @returns 生成結果
    */
