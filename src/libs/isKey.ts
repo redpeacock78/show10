@@ -1,7 +1,7 @@
 import { Key, Snowflake } from "libs";
 
 /**
- * 与えられた文字列が適切ななKeyかどうかを判別する
+ * 与えられた文字列が適切なKeyかどうかを判別する
  * @param {string} key 与えられた文字列
  * @returns {boolean} 判定結果
  */
