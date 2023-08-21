@@ -1,4 +1,4 @@
-import { Key } from "@libs/key.ts";
+import { Key, Snowflake } from "libs";
 
 /**
  * 与えられた文字列が適切ななKeyかどうかを判別する
@@ -6,6 +6,11 @@ import { Key } from "@libs/key.ts";
  * @returns {boolean} 判定結果
  */
 export const isKey = (key: string): boolean => {
-  if (Key.decode62(key) === "0") return false;
-  return true;
+  try {
+    const decodeKey: string = Key.decode62(key);
+    Snowflake.decode([...decodeKey].reverse().join(""));
+    return true;
+  } catch {
+    return false;
+  }
 };
