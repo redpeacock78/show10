@@ -33,8 +33,8 @@ export namespace Snowflake {
       }
     };
   /**
-   * Snowflake生成された一意な値を生成された日付に戻す
-   * @param {number} id Snowflake生成された一意な値
+   * Snowflakeで生成された一意な値を生成された日付に戻す
+   * @param {number} id Snowflakeで生成された一意な値
    * @returns 生成された日付
    */
   export const decode = (id: string): Date => {
