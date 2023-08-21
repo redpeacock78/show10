@@ -1,7 +1,7 @@
 // deno-lint-ignore-file
 
 /**
- * Sbowflakeに関する名前空間
+ * Snowflakeに関する名前空間
  */
 export namespace Snowflake {
   const baseTime: number = Date.UTC(2023, 6, 1, 0, 0, 0, 0);
@@ -41,7 +41,7 @@ export namespace Snowflake {
     const bitId: string = BigInt(id).toString(2);
     const rm22BitId: string = bitId.slice(0, bitId.length - 22);
     const result: Date = new Date(parseInt(rm22BitId, 2) + baseTime);
-    if (Number.isNaN(result.getTime())) new Error();
+    if (Number.isNaN(result.getTime())) throw new Error();
     return result;
   };
 }
