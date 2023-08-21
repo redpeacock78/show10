@@ -34,6 +34,8 @@ export namespace Key {
       if ([...chars].indexOf(char) === -1) break;
       num = num * base + BigInt([...chars].indexOf(char) as number);
     }
-    return num.toString();
+    const result: string = num.toString();
+    if (result === "0") new Error();
+    return result;
   };
 }
