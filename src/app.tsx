@@ -39,6 +39,7 @@ app.get("/", (c: any) => {
   const host: string = c.req.header("x-forwarded-for") ?? c.req.header("host");
   const protocol: string = host.startsWith("localhost") ? "http" : "https";
   const apiBase = `${protocol}://${host}`;
+  console.log(c.req);
 
   const stream: ReadableStream<Uint8Array> = renderToReadableStream(
     <html>
