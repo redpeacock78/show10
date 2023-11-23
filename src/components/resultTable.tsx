@@ -10,11 +10,13 @@ export const ResultTable = async (props: { url: string; apiBase: string }) => {
   try {
     const data: string = JSON.stringify({ url: props.url });
     const apiUrl = `${props.apiBase}/api/v0/shorter`;
+    console.log(apiUrl);
     const option = {
       method: "post",
       body: data,
     };
     const res: Response = await fetch(apiUrl, option);
+    console.log(res);
     const json = await res.json();
 
     return (
