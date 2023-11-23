@@ -14,6 +14,7 @@ export const ResultTable = async (props: { url: string; apiBase: string }) => {
     const option = {
       method: "post",
       body: data,
+      redirect: "manual",
     };
     const res: Response = await fetch(apiUrl, option);
     console.log(res);
