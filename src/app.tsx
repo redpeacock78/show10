@@ -36,7 +36,7 @@ const app = new Hono();
 
 app.get("/", (c: any) => {
   const url: string = c.req.query("url");
-  const host: string = c.req.header("host");
+  const host: string = c.req.header("x-forwarded-host") ?? c.req.header("host");
   const protocol: string = host.startsWith("localhost") ? "http" : "https";
   const apiBase = `${protocol}://${host}`;
 
