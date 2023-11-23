@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "hono-middleware";
 import { isUrl } from "libs";
+import { Shorter } from "libs";
 import { SuccessAlert } from "@components/common/successAlert.tsx";
 import { ErrorAlert } from "@components/common/errorAlert.tsx";
 
@@ -8,17 +9,7 @@ export const ResultTable = async (props: { url: string; apiBase: string }) => {
   if (!isUrl(props.url))
     return <ErrorAlert message={"Please enter the exact URL."} />;
   try {
-    const data: string = JSON.stringify({ url: props.url });
-    const apiUrl = `${props.apiBase}/api/v0/shorter`;
-    console.log(apiUrl);
-    const option = {
-      method: "post",
-      body: data,
-      redirect: "manual",
-    };
-    const res: Response = await fetch(apiUrl, option);
-    console.log(res);
-    const json = await res.json();
+    const json = await Shorter.generater(props.url);
 
     return (
       <div>
