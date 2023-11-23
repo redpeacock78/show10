@@ -2,12 +2,14 @@ import { Hono } from "hono";
 import { serve } from "serve";
 import { Db } from "libs";
 import { api, common } from "router";
+import app from "./app.tsx";
 
-const app = new Hono();
+const server = new Hono();
 
 await Db.createShorterUrlTable();
 
-app.route("/", api);
-app.route("/", common);
+server.route("/", api);
+server.route("/", app);
+server.route("/", common);
 
-serve(app.fetch);
+serve(server.fetch);
