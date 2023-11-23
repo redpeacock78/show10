@@ -1,9 +1,10 @@
+// deno-lint-ignore-file no-explicit-any
 import { Hono } from "hono";
 import { Db, isKey } from "libs";
 
 const key = new Hono();
 
-key.get("/:key", async (c): Promise<void | Response> => {
+key.get("/:key", async (c: any): Promise<void | Response> => {
   const key: string = c.req.param("key");
   if (!isKey(key)) return c.text("Invalid Url!", 400);
   try {
