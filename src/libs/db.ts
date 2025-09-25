@@ -1,18 +1,35 @@
 // deno-lint-ignore-file no-namespace
-import "dotenv";
+import { Secrets } from "libs";
 import postgres from "postgresjs";
+
+const host = Secrets.POSTGRES_HOST;
+const port = Number(Secrets.POSTGRES_PORT) || 12345;
+const database = Secrets.POSTGRES_DB;
+const username = Secrets.POSTGRES_USER;
+const password = Secrets.POSTGRES_PASSWORD;
+const ssl = (() => {
+  try {
+    return JSON.parse(Secrets.POSTGRES_SSL) as boolean;
+  } catch {
+    return Secrets.POSTGRES_SSL as
+      | "require"
+      | "allow"
+      | "prefer"
+      | "verify-full";
+  }
+})();
 
 /**
  * データベースの操作に関する名前空間
  */
 export namespace Db {
   const sql = postgres({
-    host: Deno.env.get("POSTGRES_HOST"),
-    port: Deno.env.get("POSTGRES_PORT"),
-    database: Deno.env.get("POSTGRES_DB"),
-    username: Deno.env.get("POSTGRES_USER"),
-    password: Deno.env.get("POSTGRES_PASSWORD"),
-    ssl: Deno.env.get("POSTGRES_SSL"),
+    host,
+    port,
+    database,
+    username,
+    password,
+    ssl,
     onnotice: (_i: unknown): void => {
       return;
     },
@@ -34,6 +51,13 @@ export namespace Db {
   export type getLastIdType = {
     id: string;
   }[];
+  /**
+   * DBへの接続確認を行う
+   * @returns {Promise<void>}
+   */
+  export const ping = async (): Promise<void> => {
+    await sql`SELECT 1`;
+  };
   /**
    * 使用するDBのテーブルを作成する(作成済みの場合は再作成されない)
    * @returns {Promise<void>}
