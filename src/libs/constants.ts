@@ -1,6 +1,6 @@
 export const Constants = {
   ROOT_PATH: "/",
-  BASE_PATH: "/api",
+  API_PATH: "/api",
   PING_PATH: "/ping",
   SHORTER_PATH: "/shorter",
   API_VERSION: "v0",
