@@ -3,7 +3,13 @@ import { Secrets } from "libs";
 import postgres from "postgresjs";
 
 const host = Secrets.POSTGRES_HOST;
-const port = Number(Secrets.POSTGRES_PORT) || 12345;
+const port = (() => {
+  try {
+    return Number(Secrets.POSTGRES_PORT);
+  } catch {
+    return 54321;
+  }
+})();
 const database = Secrets.POSTGRES_DB;
 const username = Secrets.POSTGRES_USER;
 const password = Secrets.POSTGRES_PASSWORD;
