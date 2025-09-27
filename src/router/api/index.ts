@@ -1,10 +1,13 @@
 import { Hono } from "hono";
+import { Constants } from "libs";
 import { default as ping } from "@router/api/ping.ts";
 import { default as shorter } from "@router/api/shorter.ts";
 
-const api = new Hono().basePath("/api/v0");
+const api = new Hono().basePath(
+  `${Constants.BASE_PATH}${Constants.ROOT_PATH}${Constants.API_VERSION}`
+);
 
-api.route("/", ping);
-api.route("/", shorter);
+api.route(`${Constants.ROOT_PATH}`, ping);
+api.route(`${Constants.ROOT_PATH}`, shorter);
 
 export default api;
