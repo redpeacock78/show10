@@ -1,11 +1,11 @@
 // deno-lint-ignore-file no-explicit-any
 import { Hono } from "hono";
-import { Db } from "libs";
+import { Db, Constants } from "libs";
 
 const ping = new Hono();
 
 ping.get(
-  "/ping",
+  `${Constants.PING_PATH}`,
   async (c: any): Promise<Response> =>
     await Db.ping()
       .then(() => c.text("OK!"))
