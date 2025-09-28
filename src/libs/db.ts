@@ -8,13 +8,9 @@ import postgres from "postgresjs";
 export namespace Db {
   const env = {
     host: Secrets.POSTGRES_HOST ?? "localhost",
-    port: (() => {
-      try {
-        return Number(Secrets.POSTGRES_PORT);
-      } catch {
-        return 54321;
-      }
-    })(),
+    port:
+      (Number.isNaN(Secrets.POSTGRES_PORT) && Number(Secrets.POSTGRES_PORT)) ||
+      54321,
     database: Secrets.POSTGRES_DB ?? "db",
     username: Secrets.POSTGRES_USER ?? "user",
     password: Secrets.POSTGRES_PASSWORD ?? "password",
