@@ -92,7 +92,7 @@ export namespace Db {
       insert into shorter_url
         (id, key, origin_url)
       values
-        (${id}, ${key}, ${originUrl})
+        (${id.toString()}, ${key}, ${originUrl})
       returning key
     `;
   };
