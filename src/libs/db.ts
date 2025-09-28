@@ -2,40 +2,42 @@
 import { Secrets } from "libs";
 import postgres from "postgresjs";
 
-const host = Secrets.POSTGRES_HOST;
-const port = (() => {
-  try {
-    return Number(Secrets.POSTGRES_PORT);
-  } catch {
-    return 54321;
-  }
-})();
-const database = Secrets.POSTGRES_DB;
-const username = Secrets.POSTGRES_USER;
-const password = Secrets.POSTGRES_PASSWORD;
-const ssl = (() => {
-  try {
-    return JSON.parse(Secrets.POSTGRES_SSL) as boolean;
-  } catch {
-    return Secrets.POSTGRES_SSL as
-      | "require"
-      | "allow"
-      | "prefer"
-      | "verify-full";
-  }
-})();
-
 /**
  * データベースの操作に関する名前空間
  */
 export namespace Db {
+  const env = {
+    host: Secrets.POSTGRES_HOST ?? "localhost",
+    port: (() => {
+      try {
+        return Number(Secrets.POSTGRES_PORT);
+      } catch {
+        return 54321;
+      }
+    })(),
+    database: Secrets.POSTGRES_DB ?? "db",
+    username: Secrets.POSTGRES_USER ?? "user",
+    password: Secrets.POSTGRES_PASSWORD ?? "password",
+    ssl: (() => {
+      try {
+        return JSON.parse(Secrets.POSTGRES_SSL) as boolean;
+      } catch {
+        if (!Secrets.POSTGRES_SSL) return false;
+        return Secrets.POSTGRES_SSL as
+          | "require"
+          | "allow"
+          | "prefer"
+          | "verify-full";
+      }
+    })(),
+  } as const;
   const sql = postgres({
-    host,
-    port,
-    database,
-    username,
-    password,
-    ssl,
+    host: env.host,
+    port: env.port,
+    database: env.database,
+    username: env.username,
+    password: env.password,
+    ssl: env.ssl,
     onnotice: (_i: unknown): void => {
       return;
     },
