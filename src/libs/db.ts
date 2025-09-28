@@ -9,7 +9,8 @@ export namespace Db {
   const env = {
     host: Secrets.POSTGRES_HOST ?? "localhost",
     port:
-      (Number.isNaN(Secrets.POSTGRES_PORT) && Number(Secrets.POSTGRES_PORT)) ||
+      (!Number.isNaN(Number(Secrets.POSTGRES_PORT)) &&
+        Number(Secrets.POSTGRES_PORT)) ||
       54321,
     database: Secrets.POSTGRES_DB ?? "db",
     username: Secrets.POSTGRES_USER ?? "user",
