@@ -19,7 +19,7 @@ export namespace Db {
       try {
         return JSON.parse(Secrets.POSTGRES_SSL) as boolean;
       } catch {
-        if (!Secrets.POSTGRES_SSL) return false;
+        if (!Secrets.POSTGRES_SSL.length) return false;
         return Secrets.POSTGRES_SSL as
           | "require"
           | "allow"
